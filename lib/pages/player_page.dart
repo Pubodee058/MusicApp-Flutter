@@ -15,11 +15,13 @@ class PlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueAccent,
        appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
       title: ValueListenableBuilder<SongModel?>(
         valueListenable: _audioService.currentSong,
         builder: (_, song, __) =>
-          Text(song?.title ?? 'Now Playing'),
+          Text(song?.title ?? 'Now Playing',style: TextStyle(color: Colors.white),),
       ),
       automaticallyImplyLeading: true,
     ),
@@ -39,8 +41,8 @@ class PlayerPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(song.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              Text(song.artist, style: const TextStyle(fontSize: 18, color: Colors.grey)),
+              Text(song.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white)),
+              Text(song.artist, style: const TextStyle(fontSize: 18, color: Colors.white)),
               const SizedBox(height: 24),
               ValueListenableBuilder<Duration>(
                 valueListenable: _audioService.position,
@@ -109,8 +111,8 @@ class PlayerPage extends StatelessWidget {
                         return ListTile(
                           selected: i == _audioService.currentIndex,
                           leading: Image.asset(s.coverPath, width: 40, fit: BoxFit.cover),
-                          title: Text(s.title),
-                          subtitle: Text(s.artist),
+                          title: Text(s.title,style: TextStyle(color: Colors.white),),
+                          subtitle: Text(s.artist,style: TextStyle(color: Colors.white)),
                           onTap: () => _audioService.playSongList(list, i),
                         );
                       },
