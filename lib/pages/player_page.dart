@@ -3,7 +3,7 @@ import '../models/song_model.dart';
 import '../services/audio_service.dart';
 
 class PlayerPage extends StatelessWidget {
-   PlayerPage({super.key});
+  PlayerPage({super.key});
   final AudioService _audioService = AudioService();
 
   String _formatDuration(Duration d) {
@@ -16,15 +16,18 @@ class PlayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-      title: ValueListenableBuilder<SongModel?>(
-        valueListenable: _audioService.currentSong,
-        builder: (_, song, __) =>
-          Text(song?.title ?? 'Now Playing',style: TextStyle(color: Colors.white),),
+        title: ValueListenableBuilder<SongModel?>(
+          valueListenable: _audioService.currentSong,
+          builder:
+              (_, song, __) => Text(
+                song?.title ?? 'Now Playing',
+                style: TextStyle(color: Colors.white),
+              ),
+        ),
+        automaticallyImplyLeading: true,
       ),
-      automaticallyImplyLeading: true,
-    ),
       body: ValueListenableBuilder<SongModel?>(
         valueListenable: _audioService.currentSong,
         builder: (_, song, __) {
@@ -40,9 +43,19 @@ class PlayerPage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 16),
-              Text(song.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white)),
-              Text(song.artist, style: const TextStyle(fontSize: 18, color: Colors.white)),
+              const SizedBox(height: 10),
+              Text(
+                song.title,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                song.artist,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+              ),
               const SizedBox(height: 24),
               ValueListenableBuilder<Duration>(
                 valueListenable: _audioService.position,
@@ -50,9 +63,10 @@ class PlayerPage extends StatelessWidget {
                   return Slider(
                     min: 0.0,
                     max: _audioService.duration.value.inSeconds.toDouble(),
-                    value: position.inSeconds
-                        .toDouble()
-                        .clamp(0.0, _audioService.duration.value.inSeconds.toDouble()),
+                    value: position.inSeconds.toDouble().clamp(
+                      0.0,
+                      _audioService.duration.value.inSeconds.toDouble(),
+                    ),
                     onChanged: (newValue) {
                       final seekPos = Duration(seconds: newValue.toInt());
                       _audioService.seek(seekPos);
@@ -61,7 +75,7 @@ class PlayerPage extends StatelessWidget {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -76,30 +90,35 @@ class PlayerPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.skip_previous, size: 36),
+                    icon: const Icon(Icons.skip_previous, size: 30),
                     onPressed: _audioService.playPrevious,
                   ),
                   ValueListenableBuilder<bool>(
                     valueListenable: _audioService.isPlaying,
-                    builder: (_, playing, __) => IconButton(
-                      iconSize: 56,
-                      icon: Icon(playing ? Icons.pause_circle : Icons.play_circle),
-                      onPressed: _audioService.togglePlayPause,
-                    ),
+                    builder:
+                        (_, playing, __) => IconButton(
+                          iconSize: 50,
+                          icon: Icon(
+                            playing ? Icons.pause_circle : Icons.play_circle,
+                          ),
+                          onPressed: _audioService.togglePlayPause,
+                        ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.skip_next, size: 36),
+                    icon: const Icon(Icons.skip_next, size: 30),
                     onPressed: _audioService.playNext,
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              const Text('Up Next', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text(
+                'Up Next',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               Expanded(
                 child: ValueListenableBuilder<List<SongModel>>(
                   valueListenable: _audioService.playlist,
@@ -108,12 +127,22 @@ class PlayerPage extends StatelessWidget {
                       itemCount: list.length,
                       itemBuilder: (_, i) {
                         final s = list[i];
-                        return ListTile(
-                          selected: i == _audioService.currentIndex,
-                          leading: Image.asset(s.coverPath, width: 40, fit: BoxFit.cover),
-                          title: Text(s.title,style: TextStyle(color: Colors.white),),
-                          subtitle: Text(s.artist,style: TextStyle(color: Colors.white)),
-                          onTap: () => _audioService.playSongList(list, i),
+                        final isPlaying = i == _audioService.currentIndex;
+                        return Container(
+                          color:
+                              isPlaying
+                                  ? Colors.blueGrey
+                                  : Colors.transparent,
+                          child: ListTile(
+                            leading: Image.asset(
+                              s.coverPath,
+                              width: 40,
+                              fit: BoxFit.cover,
+                            ),
+                            title: Text(s.title),
+                            subtitle: Text(s.artist),
+                            onTap: () => _audioService.playSongList(list, i),
+                          ),
                         );
                       },
                     );

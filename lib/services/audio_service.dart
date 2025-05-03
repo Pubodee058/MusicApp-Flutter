@@ -53,7 +53,6 @@ Future<void> playSongList(List<SongModel> list, int index) async {
     final song = _songs[currentIndex];
     currentSong.value = song;
 
-    // โหลด asset หรือ file จาก device
     final path = song.path;
     if (path.startsWith('assets/audio/')) {
       final assetPath = path.replaceFirst('assets/', '');

@@ -28,7 +28,7 @@ class _SongListPageState extends State<SongListPage> {
 
   final AudioService _audioService = AudioService();
 
-  /// เมื่อผู้ใช้แตะเพลงในลิสต์
+
   void _selectSong(int index) async {
     await _audioService.playSongList(_songs, index);
     await Navigator.push(
@@ -44,7 +44,8 @@ class _SongListPageState extends State<SongListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Playlist', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold))),
+      backgroundColor: Colors.white54,
+      appBar: AppBar(title: Text('My Playlist', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,backgroundColor: Colors.white54))),
       body: ListView.builder(
         itemCount: _songs.length,
         itemBuilder: (_, index) {
